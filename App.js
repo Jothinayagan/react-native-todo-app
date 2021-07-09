@@ -21,6 +21,12 @@ export default function App() {
     setTask(null);
   };
 
+  const completedTask = (index) => {
+    let copyTaskItems = [...taskItems];
+    copyTaskItems.splice(index, 1);
+    setTaskItems(copyTaskItems);
+  };
+
   return (
     <View style={styles.container}>
       {/* Today's task container */}
@@ -28,9 +34,16 @@ export default function App() {
         <Text style={styles.sectionTitle}>Today's tasks</Text>
         <View style={styles.taskItem}>
           {/* This is where the tasks will go */}
-          {taskItems.map((item, index) => (
-            <Task key={index} taskDetails={item} />
-          ))}
+          {taskItems.map((item, index) => {
+            return (
+              <TouchableOpacity
+                key={index}
+                onPress={() => completedTask(index)}
+              >
+                <Task taskDetails={item} />
+              </TouchableOpacity>
+            );
+          })}
         </View>
       </View>
 
@@ -43,6 +56,7 @@ export default function App() {
           style={styles.input}
           placeholder={"Add new task"}
           onChangeText={(text) => setTask(text)}
+          value={task}
         />
         <TouchableOpacity onPress={handleAddTask}>
           <View style={styles.addWrapper}>
